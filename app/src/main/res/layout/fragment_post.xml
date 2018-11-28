@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:background="@color/white">
+    <TextView
+        android:id="@+id/titlepost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="NEW POST"
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/label1"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titlepost"
+        android:text="enter text here"
+        android:textColor="@android:color/black"/>
+    <EditText
+        android:id="@+id/postEditText"
+        android:layout_below="@id/label1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="this is a new post ...."
+        android:textColorHint="@android:color/darker_gray"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="10dp"
+
+        />
+    <TextView
+        android:id="@+id/label2"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/postEditText"
+        android:text="select your file to upload"
+        android:textColor="@android:color/black"/>
+    <Button
+        android:id="@+id/uploadBtn"
+        android:layout_below="@id/label2"
+        android:text="Choose File"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/notification"
+        android:layout_below="@+id/uploadBtn"
+        android:text="file"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/postBtn"
+        android:layout_below="@id/notification"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_width="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/background_signup"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="16dp"
+        android:text="POST"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+
+
+
+</RelativeLayout>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/new_login_gradients"
+    android:orientation="vertical"
+    tools:context=".FaceEnrollmentActivity">
+
+
+    <FrameLayout
+        android:id="@+id/fl_pic"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/enrollborder"
+        android:layout_gravity="center">
+
+    </FrameLayout>
+    <TextView
+        android:id="@+id/tv_res"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not ready"
+        android:textColor="@android:color/black"
+        android:layout_gravity="center"/>
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/below_enroll"
+        android:layout_gravity="center"
+        />
+
+
+    <Switch
+        android:id="@+id/sw_learning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:checked="false"
+        android:text="setLearning"
+        android:visibility="gone"
+        android:enabled="true"
+        android:layout_gravity="center"
+        android:textColor="@android:color/black"/>
+
+    <Switch
+        android:id="@+id/sw_setas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="setAS"
+        android:enabled="false"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:textColor="@android:color/black"/>
+
+
+    <Button
+
+        android:id="@+id/bt_s"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/background_login"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="16dp"
+        android:text="Enroll image"
+        android:textAllCaps="false"
+        android:enabled="false"
+        android:textColor="#0E2F44"
+        android:textSize="18sp"
+        android:layout_gravity="center"/>
+    <Button
+
+        android:id="@+id/bt_d"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/background_login"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="16dp"
+        android:text="Done Enrolling ?"
+        android:textAllCaps="false"
+        android:enabled="true"
+        android:textColor="#0E2F44"
+        android:textSize="18sp"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:id="@+id/im_pic"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:srcCompat="@android:color/black" />
+
+
+
+
+
+
+
+
+
+
+</LinearLayout>

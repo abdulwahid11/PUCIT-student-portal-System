@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_post"
+            android:icon="@drawable/ic_new_post"
+            android:title="Post" />
+        <item
+            android:id="@+id/nav_edit_profile"
+            android:icon="@drawable/ic_person"
+            android:title="profile" />
+        <item
+            android:id="@+id/notification"
+            android:icon="@drawable/ic_bell"
+            android:title="notifications"
+            />
+        <item
+            android:id="@+id/addNotification"
+            android:icon="@drawable/ic_addbell"
+            android:title="Send notifications"
+            />
+
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/ic_chats"
+            android:title="chat" />
+        <item
+            android:id="@+id/nav_allusers"
+            android:icon="@drawable/ic_all_users"
+            android:title="users" />
+        <item
+            android:id="@+id/nav_logOut"
+            android:icon="@drawable/ic_logout"
+            android:title="log Out" />
+    </group>
+
+
+
+</menu>

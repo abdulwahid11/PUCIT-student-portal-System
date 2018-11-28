@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ProfileActivity">
+    <RelativeLayout
+        android:padding="60dp"
+        android:layout_marginBottom="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/default_avatar"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/profile_displayName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="26dp"
+            android:text="Display Name"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_displayName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:text="Email"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/profile_send_req_btn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/profile_decline_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+
+            android:text="SEND REQUEST"
+            android:textColor="@android:color/white"
+            android:background="@drawable/background_signup"
+
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+           />
+
+
+        <Button
+            android:id="@+id/profile_decline_btn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:text="DECLINE REQUEST"
+            android:textColor="@android:color/white"
+
+            android:background="@drawable/background_signup"/>
+
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

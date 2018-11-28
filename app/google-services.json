@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "287116710007",
+    "firebase_url": "https://pucitstudentportalsystem-16826.firebaseio.com",
+    "project_id": "pucitstudentportalsystem-16826",
+    "storage_bucket": "pucitstudentportalsystem-16826.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287116710007:android:73e434d1d36d8be2",
+        "android_client_info": {
+          "package_name": "com.example.abdul.pucitstudentportalsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287116710007-4jpqd2djpgelgpsltgajdhsi2v89rhuk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.abdul.pucitstudentportalsystem",
+            "certificate_hash": "9b2e502b491b221d72bca0f423e5aca7395d2268"
+          }
+        },
+        {
+          "client_id": "287116710007-gchp9kigff33tqb10h1rqu208mtuiapj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhiKWwDya9YZrWpO_0xmR9efbKqJSqzzo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287116710007-gchp9kigff33tqb10h1rqu208mtuiapj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
