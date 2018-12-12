@@ -213,33 +213,6 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
         }
     }
 
-    public void enrollPic() {
-        if (image == null) {
-            Log.d("ALON", "Image is null");
-            return;
-        }
-        if (user == null || user.equals("")) {
-            Log.d("ALON", "User is null");
-            return;
-        }
-                /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                image = stream.toByteArray();*/
-        //image = Utils.getNV21(480, 640, bitmap);
-                /*try {
-                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("/sdcard/jaja.yuv"));
-                    bos.write(image);
-                    bos.flush();
-                    bos.close();
-                } catch (IOException e) {
-                    Log.e("ALON", e.toString());
-                }*/
-        int res = IsItYouSdk.getInstance(getApplicationContext()).saveEnrollment(image, 0);
-        Log.d("ALON", "Result: "+String.valueOf(res));
-        String enrolls = "Enrolls: "+iiy.getNumOfEnrolls();
-        tv_res.setText("Result: "+String.valueOf(res)+" "+enrolls);
-    }
-
     public void matchPic() {
         if (image == null) {
             Log.d("ALON", "Image is null");
@@ -306,11 +279,6 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
             progress.setVisibility(View.INVISIBLE);
         }
      //   tv_res.setText(String.valueOf(res)+","+fnl+","+String.valueOf(score)+","+as+" "+enrolls);
-    }
-
-    public void elChapo(View v) {
-        takePic();
-        enrollPic();
     }
 
     public void elMacho(View v) {

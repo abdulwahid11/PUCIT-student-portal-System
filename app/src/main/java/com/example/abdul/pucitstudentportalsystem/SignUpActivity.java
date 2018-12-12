@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -61,7 +62,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import DTO.User;
 import id.zelory.compressor.Compressor;
@@ -93,6 +96,11 @@ public class SignUpActivity extends AppCompatActivity {
     private static  final  String MY_PREF="sigupPrefs";
     private ValueEventListener mDbListener;
 
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 123;
+
+
+
+
 
 
     @Override
@@ -122,6 +130,19 @@ public class SignUpActivity extends AppCompatActivity {
 
         nextBtn=(Button) findViewById(R.id.signUpButton);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,17 +157,14 @@ public class SignUpActivity extends AppCompatActivity {
                 if (mUploadTask != null && mUploadTask.isInProgress()) {
                     Toast.makeText(SignUpActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
-
-                    if(ContextCompat.checkSelfPermission(SignUpActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
-                        if(!validateUser()==true)
-                        {
-                            return;
+                    if (Build.VERSION.SDK_INT < 23) {
+                        //Do not need to check the permission
+                    } else {
+                        if (checkPermission()) {
+                            //If you have already permitted the permission
+                            // Toast.makeText(this, "here", Toast.LENGTH_SHORT).show();
+                            exectueAdterPermissionsGranted();
                         }
-                        progress.setVisibility(View.VISIBLE);
-                        uploadFile();
-                    }
-                    else{
-                        ActivityCompat.requestPermissions(SignUpActivity.this,new String []{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSION_REQUEST_CODE);
                     }
 
 
@@ -158,6 +176,10 @@ public class SignUpActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
         dob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,22 +214,111 @@ public class SignUpActivity extends AppCompatActivity {
 
 }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==PERMISSION_REQUEST_CODE&&grantResults[0]==PackageManager.PERMISSION_GRANTED)
-        {
-            if(!validateUser()==true)
-            {
-                return;
-            }
-            progress.setVisibility(View.VISIBLE);
-            uploadFile();
+    public boolean checkPermission(){
+        int perm2 = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA);
 
+
+        int perm1 = ContextCompat.checkSelfPermission(this,
+
+
+                Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        int perm3 = ContextCompat.checkSelfPermission(this,
+
+
+                Manifest.permission.READ_PHONE_STATE);
+      /*  int perm4 = ContextCompat.checkSelfPermission(this,
+
+
+                Manifest.permission.ACCESS_NETWORK_STATE);
+
+        int perm5 = ContextCompat.checkSelfPermission(this,
+
+
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        int perm6 = ContextCompat.checkSelfPermission(this,
+
+
+                Manifest.permission.USE_FINGERPRINT);
+
+        int perm7 = ContextCompat.checkSelfPermission(this,
+
+
+                Manifest.permission.INTERNET);
+
+*/
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (perm1!= PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
-        else{
-            Toast.makeText(SignUpActivity.this, "please provide permission", Toast.LENGTH_SHORT).show();
+        if (perm2 != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+
+        if (perm3 != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+        }
+/*
+        if (perm4 != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.ACCESS_NETWORK_STATE);
+        }
+
+        if (perm5 != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (perm6 != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.USE_FINGERPRINT);
+        }
+
+        if (perm7 != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.INTERNET);
+        }
+        */
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this,
+
+
+                    listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), MY_PERMISSIONS_REQUEST_CAMERA);
+            return false;
+        }
+
+        return true;
+
+
+    }
+    public void exectueAdterPermissionsGranted(){
+
+        if(!validateUser()==true)
+        {
+            return;
+        }
+        progress.setVisibility(View.VISIBLE);
+        uploadFile();
+    }
+
+    @Override    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA:
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED&&
+                        grantResults[1] == PackageManager.PERMISSION_GRANTED&&
+                        grantResults[2] == PackageManager.PERMISSION_GRANTED){
+
+                    Toast.makeText(this, "granted", Toast.LENGTH_SHORT).show();
+                    exectueAdterPermissionsGranted();
+                    //Permission Granted Successfully. Write working code here.
+                } else {
+                    //You did not accept the request can not use the functionality.
+                    Toast.makeText(this, "Please give permissions to proceed", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
+
+
     private void openFileChooser() {
 
         Intent intent = new Intent();
