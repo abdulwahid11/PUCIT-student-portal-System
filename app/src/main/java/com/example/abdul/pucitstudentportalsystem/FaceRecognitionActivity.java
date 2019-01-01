@@ -72,6 +72,8 @@ import io.github.silvaren.easyrs.tools.Nv21Image;
 
 public class FaceRecognitionActivity extends AppCompatActivity implements CameraListener {
 
+    //data memebers
+
     InitOperation iiyInitializationThread;
     TextView tv_res;
     Button  bt_macho;
@@ -97,7 +99,7 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
 
     private static  final  String PREF_NAME="myprefs";
     private static  final  String MY_PREF_NAME="sigupPrefs";
-
+    private static final String TAG="abdul_wahid";
 
 
     private static  final  String MY_PREF="prefs";
@@ -110,12 +112,18 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
 
     private boolean vladimirLernen, vladimirAS;
 
+
+    //method used to rotate bitmap
+
     public static Bitmap RotateBitmap(Bitmap source, float angle)
     {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
+
+    //helper method
+
     public String getBatch(String email){
         return email.substring(0,7);
     }
@@ -124,10 +132,14 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
         return Bitmap.createScaledBitmap(source, width, height, true);
     }
 
+    //typical oncreate method
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_face_recognition);
+
+        //initialize variables
 
         sp = getSharedPreferences("iiyDemo", 0);
         spEdit = sp.edit();
@@ -152,13 +164,10 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
         fl_pic = findViewById(R.id.fl_pic);
         sw_learning = findViewById(R.id.sw_learning);
         sw_setas = findViewById(R.id.sw_setas);
-       // Toast.makeText(this, ""+mAuth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
-        /*camera = Camera.open();
-        showCamera = new ShowCamera(getApplicationContext(), camera);
-        fl_pic.addView(showCamera);*/
-
         initIIYSDK();
     }
+
+    //opens camera view
 
     private void openCameraView() {
         Log.d("ALON", "Opening camera view");
@@ -168,11 +177,9 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
         Log.d("ALON", "Added");
     }
 
+    //captures a pic
+
     public void takePic() {
-
-
-
-
 
         Log.d("ALON", "Taking frame");
        image = cameraPreview.getCurrentFrame().clone();
@@ -181,7 +188,7 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
         Display display = getWindowManager().getDefaultDisplay();
         int rotation = 0;
         switch (display.getRotation()) {
-            case Surface.ROTATION_0: // This is display orientation
+            case Surface.ROTATION_0:
                 rotation = 90;
                 break;
             case Surface.ROTATION_90:
@@ -197,21 +204,16 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
 
         RenderScript rs = RenderScript.create(this);
         BitmapTools ImageTools=new BitmapTools();
-     //   Bitmap bitmap = Nv21Image.to(rs, image, 480, 640);
        Bitmap bitmap = com.example.abdul.pucitstudentportalsystem.Utils.getBitmapImageFromYUV(image, 480, 640);
 
-      //  Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-//        Bitmap bitmap = ImageTools.toBitmap(image);
-        //bitmap = ImageTools.rotate(bitmap, 270);
-
-
         if (bitmap != null) {
-            //Bitmap rot = RotateBitmap(mipap, 90);
             im_pic.setImageBitmap(bitmap);
         } else {
             Log.d("ALON", "es ist null");
         }
     }
+
+    //method for matching the pip
 
     public void matchPic() {
         if (image == null) {
@@ -229,7 +231,6 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
             p.println((System.currentTimeMillis()/1000)+":"+res);
             p.close();
         } catch (Exception e) {
-          //  Toast.makeText(this, "Could not write log", Toast.LENGTH_SHORT).show();
             Log.e("Exception", "File write failed: " + e.toString());
         }
         Log.d("ALON", "Result: "+String.valueOf(res));
@@ -242,7 +243,6 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
             iiy.finalizeMatch(false);
         }
         String enrolls = "Enrolls: "+iiy.getNumOfEnrolls();
-      //  Toast.makeText(this, ""+res, Toast.LENGTH_SHORT).show();
         String fnl = "";
         switch(res) {
             case 1:
@@ -264,7 +264,7 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
                 fnl = "user blocked";
                 break;
             case 10:
-                fnl = "Not detected";
+                fnl = "Face Not detected";
                 break;
             case 11:
                 fnl = "Someone else";
@@ -278,20 +278,20 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
             Toast.makeText(this, "face logIn Failed"+fnl+" ", Toast.LENGTH_SHORT).show();
             progress.setVisibility(View.INVISIBLE);
         }
-     //   tv_res.setText(String.valueOf(res)+","+fnl+","+String.valueOf(score)+","+as+" "+enrolls);
     }
 
+    //onclick method
     public void elMacho(View v) {
         progress.setVisibility(View.VISIBLE);
         takePic();
         matchPic();
     }
+    //after success method
+
     public void  setUpForLogIn(){
         String email=prefs.getString("email","");
         String password=prefs.getString("password","");
         final String Uid= prefs.getString("Uid","");
-        //String batch=prefs.getString("batch","");
-
         final String batch = getBatch(email);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -300,9 +300,6 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
 
                         if (task.isSuccessful()) {
 
-
-
-       // if (mAuth.getCurrentUser().isEmailVerified()) {
             String deviceToken= FirebaseInstanceId.getInstance().getToken();
             mUserDataBase.child(batch).child("users").child(Uid).child("deviceToken").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -321,24 +318,20 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
                             User user = snap.getValue(User.class);
                             if (user.getCR() == false) {
 
-                           //     prog.setVisibility(View.GONE);
                                 SharedPreferences.Editor editor = myPrefs.edit();
                                 editor.clear();
                                 editor.putString("CR", "false");
                                 editor.apply();
-                             //   Log.d(TAG, "signInWithEmail:success");
                                 Toast.makeText(FaceRecognitionActivity.this, "LogIn successfull", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(FaceRecognitionActivity.this, Home.class);
                                 startActivity(intent);
                                 finish();
                             } else {
 
-                                //prog.setVisibility(View.GONE);
                                 SharedPreferences.Editor editor = myPrefs.edit();
                                 editor.clear();
                                 editor.putString("CR", "true");
                                 editor.apply();
-                                //Log.d(TAG, "signInWithEmail:success");
 
                                 Toast.makeText(FaceRecognitionActivity.this, "LogIn successfull", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(FaceRecognitionActivity.this, Home.class);
@@ -357,29 +350,18 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
                 }
             });
                         } else {
-                            // If sign in fails, display a message to the user.
-
                             progress.setVisibility(View.GONE);
-                           // prog.setVisibility(View.GONE);
-                            //Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(FaceRecognitionActivity.this, "authentication failed", Toast.LENGTH_SHORT).show();
 
                         }
 
-                        // ...
                     }
                 });
 
 
-            // Sign in success, update UI with the signed-in user's information
-
-
-      //  }
-        //else {
-          //  Toast.makeText(FaceRecognitionActivity.this, "please verify your email", Toast.LENGTH_SHORT).show();
-            //prog.setVisibility(View.GONE);
-        //}
     }
+
+    //init the open cv SDK
 
     public void initIIYSDK()
     {
@@ -402,6 +384,7 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
         return false;
     }
 
+
     public class InitOperation extends AsyncTask<Integer, Void, Integer>
     {
 
@@ -414,27 +397,7 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
 
         @Override
         protected Integer doInBackground(Integer... params) {
-            //int initResult = IsItYouSdk.getInstance(getApplicationContext()).init("AlonGoldenberg10", 0);
             int initResult = iiy.init("R3JoeBpA271NzmQ8",90);
-
-
-            Log.d("ALON", "initResult: "+initResult);
-            /*File file = new File("/sdcard/lulu.yuv");
-            int size = (int) file.length();
-            byte[] bytes = new byte[size];
-            try {
-                BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-                buf.read(bytes, 0, bytes.length);
-                buf.close();
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            int res = IsItYouSdk.getInstance(getApplicationContext()).saveEnrollment(bytes, 0);
-            Log.d("ALON", "Result: "+String.valueOf(res));*/
             return initResult;
         }
 
@@ -443,36 +406,14 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
             // TODO Auto-generated method stub
             super.onPostExecute(result);
             String initUser = iiy.initUser("Guest");
-            //sw_learning.setChecked(iiy.getIsLearning());
             user = iiy.getCurrentUser();
             iiy.setMaxFails(10);
-           // sw_learning.setChecked(iiy.getIsLearning());
-            //sw_setas.setChecked(iiy.getAS());
             final String enrolls = "Enrolls: "+iiy.getNumOfEnrolls();
             openCameraView();
-            /*File file = new File("/sdcard/lulu.yuv");
-            int size = (int) file.length();
-            byte[] bytes = new byte[size];
-            try {
-                BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-                buf.read(bytes, 0, bytes.length);
-                buf.close();
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }iiy
-            int res = IsItYouSdk.getInstance(getApplicationContext()).saveEnrollment(bytes, 0);
-            Log.d("ALON", "Result: "+String.valueOf(res));*/
-            //IsItYouSdk.getInstance(getApplicationContext()).setASEnroll(false);
             runOnUiThread(new Runnable() {
-
                 @Override
                 public void run() {
                     tv_res.setText("Init user "+user + " "+enrolls);
-
                     bt_macho.setEnabled(true);
                 }
             });
@@ -480,148 +421,5 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
 
     }
 
-    public class ImageOperation extends AsyncTask<Integer, Void, Integer>
-    {
-
-        @Override
-        protected void onPreExecute() {
-            // TODO Auto-generated method stub
-            super.onPreExecute();
-            tv_res.setText("Processing...");
-
-        }
-
-        @Override
-        protected Integer doInBackground(Integer... params) {
-            try {
-                Bitmap original = MediaStore.Images.Media.getBitmap(getContentResolver(), imUri);
-                /*try {
-                    Log.d("ALON", original.getColorSpace().toString());
-                } catch (Exception e) {
-
-                }*/
-                Bitmap rotated = RotateBitmap(original, 90);
-                Bitmap stretched = ResizeBitmap(rotated, 480, 640);
-                bitmap = stretched;
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        im_pic.setImageBitmap(bitmap);
-                    }
-                });
-                /*Log.d("ALON", "Image size is "+image.length);
-                Mat mat = new Mat(480, 640, CvType.CV_8UC3);
-                mat.put(0, 0, image);
-                Mat yuv = new Mat();
-                Imgproc.cvtColor(mat, yuv, Imgproc.COLOR_RGB2YUV);
-                Mat nv21 = new Mat();
-                Imgproc.cvtColor(yuv, nv21, Imgproc.COLOR_YUV2RGB_NV21);
-                */
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return 0;
-        }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            // TODO Auto-generated method stub
-            super.onPostExecute(result);
-            runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    tv_res.setText("Processed");
-                }
-            });
-        }
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        Log.d("ALON", String.format("RC %d RES %d", requestCode, resultCode));
-
-        if (data == null || data.getData() == null) {
-            Log.d("ALON", String.format("data: %b getData: %b", data == null, data.getData() == null));
-        }
-
-        if (requestCode == 10 && resultCode == RESULT_OK) {
-
-            Uri uri = data.getData();
-            imUri = uri;
-
-            ImageOperation imageOperation = new ImageOperation();
-            imageOperation.execute();
-        }
-
-        if (requestCode == 20 && resultCode == RESULT_OK) {
-            bitmap = (Bitmap) data.getExtras().get("data");
-            //im_pic.setImageBitmap(bitmap);
-            //Log.d("ALON", bitmap.getColorSpace().toString());
-            byte[] buffer = bitmapToBytes(bitmap);
-            int dodo = iiy.match(buffer, 1);
-            Log.d("ALON", "Result: "+dodo);
-            if (dodo == 1)
-                iiy.finalizeMatch(true);
-            else
-                iiy.finalizeMatch(false);
-        }
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(mDbListener!=null)
-        {
-
-            ref.removeEventListener(mDbListener);
-
-        }
-
-    }
-
-
-    private byte[] bitmapToBytes(Bitmap source) {
-        /*Bitmap bitmap = ResizeBitmap(source, 480, 640);
-        Mat mat = new Mat(bitmap.getHeight(), bitmap.getWidth(), CvType.CV_8UC3);
-        Utils.bitmapToMat(bitmap, mat);
-        byte[] buffer = new byte[(int) (mat.total() * mat.channels())];
-        mat.get(0, 0, buffer);
-        return buffer;*/
-
-        Log.d("ALON", "Conf: "+source.getConfig().toString());
-        //Bitmap b = source;
-        source = ResizeBitmap(source, 480, 640);
-        int[] pixels = new int[480 * 640];
-        source.getPixels(pixels, 0, 480, 0, 0, 480, 640);
-        byte[] array = new byte[pixels.length * 3 / 2];
-        com.example.abdul.pucitstudentportalsystem.Utils.encodeYUV420SP(array, pixels, 480, 640);
-        /*int bytes = b.getByteCount();
-        //or we can calculate bytes this way. Use a different value than 4 if you don't use 32bit images.
-        //int bytes = b.getWidth()*b.getHeight()*4;
-
-        ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
-        b.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
-
-        byte[] array = buffer.array(); //Get the underlying array containing the data.
-        byte[] converted = new byte[array.length * 3 / 2];
-        biz.isityou.demo.Utils.encodeYUV420SP(converted, array, 480, 640);*/
-        return array;
-
-    }
-
-    Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
-        @Override
-        public void onPictureTaken(byte[] bytes, Camera camera) {
-            image = bytes;
-            Bitmap mipap = BitmapFactory.decodeByteArray(image, 0, image.length);
-            Bitmap rot = RotateBitmap(mipap, 90);
-            im_pic.setImageBitmap(rot);
-            camera.startPreview();
-        }
-    };
 
 }
