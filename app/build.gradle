@@ -11,6 +11,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         renderscriptTargetApi 16
         renderscriptSupportModeEnabled true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -21,7 +22,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:support-v4:27.1.1'
@@ -40,11 +41,9 @@ dependencies {
     compile 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
     compile 'id.zelory:compressor:2.1.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation fileTree(dir: 'libs', include: ['*.jar',
-                                                   '*.aar'])
-
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     compile 'io.github.silvaren:easyrs:0.5.3'
-
+    implementation project(':openCVLibrary342')
 }
 
 apply plugin: 'com.google.gms.google-services'
