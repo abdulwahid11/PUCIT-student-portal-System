@@ -19,6 +19,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets { main { jni.srcDirs = ['src/main/jni', 'src/main/jniLibs/', 'src/main/jni/'] } }
+    externalNativeBuild {
+        ndkBuild {
+            path file('build/intermediates/ndk/debug/Android.mk')
+        }
+    }
 }
 
 dependencies {
@@ -40,7 +46,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
     compile 'id.zelory:compressor:2.1.0'
-    implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     compile 'io.github.silvaren:easyrs:0.5.3'

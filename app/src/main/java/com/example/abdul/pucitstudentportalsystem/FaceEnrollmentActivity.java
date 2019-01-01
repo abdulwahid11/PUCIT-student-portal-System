@@ -66,7 +66,7 @@ public class FaceEnrollmentActivity extends AppCompatActivity implements CameraL
     private Bitmap bitmap;
     private Uri imUri;
     private String user;
-    private IsItYouSdk iiy;
+    private IsItYouSdk OpenCV;
 
     private String username;
 
@@ -94,7 +94,7 @@ public class FaceEnrollmentActivity extends AppCompatActivity implements CameraL
         sp = getSharedPreferences("iiyDemo", 0);
         spEdit = sp.edit();
 
-        iiy = IsItYouSdk.getInstance(getApplicationContext());
+        OpenCV = IsItYouSdk.getInstance(getApplicationContext());
 
 
         tv_res = findViewById(R.id.tv_res);
@@ -126,7 +126,7 @@ public class FaceEnrollmentActivity extends AppCompatActivity implements CameraL
 
 
         initIIYSDK();
-        iiy.resetAppUser("Guest");
+        OpenCV.resetAppUser("Guest");
         tv_res.setText("Init user Guest Enrolls: 0");
 
 
@@ -181,7 +181,7 @@ public class FaceEnrollmentActivity extends AppCompatActivity implements CameraL
         }
         int res = IsItYouSdk.getInstance(getApplicationContext()).saveEnrollment(image, 0);
         Log.d("ALON", "Result: "+String.valueOf(res));
-        String enrolls = "Enrolls: "+iiy.getNumOfEnrolls();
+        String enrolls = "Enrolls: "+OpenCV.getNumOfEnrolls();
         tv_res.setText("Result: "+String.valueOf(res)+" "+enrolls);
 
     }
@@ -221,7 +221,7 @@ public class FaceEnrollmentActivity extends AppCompatActivity implements CameraL
         @Override
         protected Integer doInBackground(Integer... params) {
 
-            int initResult = iiy.init("R3JoeBpA271NzmQ8",90);
+            int initResult = OpenCV.init("R3JoeBpA271NzmQ8",90);
             Log.d("ALON", "initResult: "+initResult);
 
             return initResult;
@@ -231,11 +231,11 @@ public class FaceEnrollmentActivity extends AppCompatActivity implements CameraL
         protected void onPostExecute(Integer result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-            String initUser = iiy.initUser("Guest");
-            user = iiy.getCurrentUser();
+            String initUser = OpenCV.initUser("Guest");
+            user = OpenCV.getCurrentUser();
             sw_learning.setChecked(true);
             sw_setas.setChecked(true);
-            final String enrolls = "Enrolls: "+iiy.getNumOfEnrolls();
+            final String enrolls = "Enrolls: "+OpenCV.getNumOfEnrolls();
             openCameraView();
             runOnUiThread(new Runnable() {
 

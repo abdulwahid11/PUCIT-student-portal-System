@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.opencv.android.OpenCVLoader;
+import org.opencv.osgi.OpenCVInterface;
 import org.w3c.dom.Text;
 
 import DTO.User;
@@ -31,13 +33,19 @@ public class MainActivity extends AppCompatActivity {
     private static  final  String PREF_NAME="myprefs";
     private DatabaseReference mRef;
 
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        if(OpenCVLoader.initDebug()){
+            Toast.makeText(MainActivity.this, "OpenCV Loaded Successfully!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(MainActivity.this, "OpenCV Not Loaded!", Toast.LENGTH_SHORT).show();
+        }
 
         mAuth = FirebaseAuth.getInstance();
         prefs=getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);

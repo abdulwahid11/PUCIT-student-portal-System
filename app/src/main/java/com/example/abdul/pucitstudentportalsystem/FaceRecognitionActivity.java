@@ -92,7 +92,7 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
     private Uri imUri;
     private String user;
     private ValueEventListener mDbListener;
-    private IsItYouSdk iiy;
+    private IsItYouSdk OpenCV;
     private DatabaseReference mUserDataBase;
     private SharedPreferences myPrefs;
     private SharedPreferences prefs;
@@ -150,7 +150,7 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
         prefs=getSharedPreferences(MY_PREF_NAME, Context.MODE_PRIVATE);
         myPrefs=getSharedPreferences(MY_PREF,Context.MODE_PRIVATE);
 
-        iiy = IsItYouSdk.getInstance(getApplicationContext());
+        OpenCV = IsItYouSdk.getInstance(getApplicationContext());
         database=FirebaseDatabase.getInstance();
         ref=database.getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -224,8 +224,8 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
             Log.d("ALON", "User is null");
             return;
         }
-        int res = iiy.match(image, 0);
-        String path = Environment.getExternalStorageDirectory().toString()+"/IIYLOGS/iiylog"+iiy.getNumOfEnrolls()+".txt";
+        int res = OpenCV.match(image, 0);
+        String path = Environment.getExternalStorageDirectory().toString()+"/IIYLOGS/iiylog"+OpenCV.getNumOfEnrolls()+".txt";
         try {
             PrintWriter p = new PrintWriter(new FileOutputStream(path, true));
             p.println((System.currentTimeMillis()/1000)+":"+res);
@@ -234,22 +234,22 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
             Log.e("Exception", "File write failed: " + e.toString());
         }
         Log.d("ALON", "Result: "+String.valueOf(res));
-        Double score = iiy.getScoreDebug();
-        String as = iiy.getASReason();
+        Double score = OpenCV.getScoreDebug();
+        String as = OpenCV.getASReason();
         if (res == IsItYouConstants.SUCCESS) {
             Log.d("ALON", "Finalized with "+res);
-            iiy.finalizeMatch(true);
+            OpenCV.finalizeMatch(true);
         } else {
-            iiy.finalizeMatch(false);
+            OpenCV.finalizeMatch(false);
         }
-        String enrolls = "Enrolls: "+iiy.getNumOfEnrolls();
+        String enrolls = "Enrolls: "+OpenCV.getNumOfEnrolls();
         String fnl = "";
         switch(res) {
             case 1:
                 fnl = "Success";
                 break;
             case 2:
-                if (iiy.getAS())
+                if (OpenCV.getAS())
                     fnl = "Second factor";
                 else
                     fnl = "Success (SF)";
@@ -397,7 +397,7 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
 
         @Override
         protected Integer doInBackground(Integer... params) {
-            int initResult = iiy.init("R3JoeBpA271NzmQ8",90);
+            int initResult = OpenCV.init("R3JoeBpA271NzmQ8",90);
             return initResult;
         }
 
@@ -405,10 +405,10 @@ public class FaceRecognitionActivity extends AppCompatActivity implements Camera
         protected void onPostExecute(Integer result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-            String initUser = iiy.initUser("Guest");
-            user = iiy.getCurrentUser();
-            iiy.setMaxFails(10);
-            final String enrolls = "Enrolls: "+iiy.getNumOfEnrolls();
+            String initUser = OpenCV.initUser("Guest");
+            user = OpenCV.getCurrentUser();
+            OpenCV.setMaxFails(10);
+            final String enrolls = "Enrolls: "+OpenCV.getNumOfEnrolls();
             openCameraView();
             runOnUiThread(new Runnable() {
                 @Override
