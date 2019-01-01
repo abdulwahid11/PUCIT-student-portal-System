@@ -3,6 +3,7 @@ package com.example.abdul.pucitstudentportalsystem;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         else{
             Toast.makeText(MainActivity.this, "OpenCV Not Loaded!", Toast.LENGTH_SHORT).show();
         }
+
+        MultiDex.install(this);
 
         mAuth = FirebaseAuth.getInstance();
         prefs=getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
